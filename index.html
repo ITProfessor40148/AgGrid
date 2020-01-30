@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shaul</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<textarea id="sql" rows="10" style="width: 100%"></textarea>
+				<button onclick="loadInitData()">Load Standard</button>
+				<button>GenerateSQL</button>
+				<button>Execute</button>
+				<button>Load From File</button>
+				<button>Save To File</button>
+
+			</div>
+			
+		</div>
+		
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/papaparse.min.js"></script>
+	<script type="text/javascript" src="./js/loadCsv.js"></script>  
+
+</body>
+</html>

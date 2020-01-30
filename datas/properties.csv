@@ -1,0 +1,3 @@
+﻿Property Name,Formula,Aggregate Function,Split Method
+Price,,AVG,"COPY,FACTOR"
+Actual,,SUM,"DIVIDE,FACTOR"
