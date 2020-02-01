@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Shaul</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
+<head>
+	<title>CSV-SQL</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.css">
+	<style type="text/css">
+		table, thead, th, tr, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+	</style>
 </head>
+
 <body>
+	<label for='commands'>SQL Statements</label>
+	<br>
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col-md-12">
-				<textarea id="sql" rows="10" style="width: 100%"></textarea>
-				<button onclick="loadInitData()">Load Standard</button>
-				<button>GenerateSQL</button>
-				<button>Execute</button>
-				<button>Load From File</button>
-				<button>Save To File</button>
+				<!-- codeMirror -->
+				<textarea id="commands"></textarea>
 
+				<!-- buttons start -->
+				<button onclick="loadStandard()">Load Standard</button>
+				<button id="genSQL" disabled="true" onclick="generateSQL()">GenerateSQL</button>
+				<button id="execute" class="button">Execute</button>
+				<button id='savedb' class="button">Save the db</button>
+				<label class="button">Load an SQLite database file: <input type='file' id='dbfile'></label>
+				<div id="error" class="error"></div>
+				<!-- buttons end -->
+
+				<!-- out put -->
+				<pre id="output">Results will be displayed here</pre>
 			</div>
-			
 		</div>
-		<p id="sql1"></p>
 	</div>
 
-	<script type="text/javascript" src="./js/sql.js"></script>
+	<script type="text/javascript">
+		var initialData = {};
+	</script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/gui.js"></script>
+	<script type="text/javascript" src="./js/sql.js"></script>
 	<script type="text/javascript" src="./js/papaparse.min.js"></script>
-	<script type="text/javascript" src="./js/loadCsv.js"></script>  
+	<script type="text/javascript" src="./js/util.js"></script>
+	<script type="text/javascript" src="./js/loadCsv.js"></script>
 	<script type="text/javascript" src="./js/generateSQL.js"></script>
+	<script type="text/javascript" src="./js/events.js"></script>
 </body>
+
 </html>
