@@ -3,23 +3,22 @@ let createTree = "DROP TABLE IF EXISTS tree;\nCREATE TABLE tree (account INTEGER
 let joiningSQL = "SELECT * FROM (SELECT * FROM (SELECT property1 AS property FROM property WHERE property1 NOT IN ( SELECT property1 FROM property LIMIT (1))), (SELECT * FROM channel WHERE channel1 NOT IN ( SELECT channel1 FROM channel LIMIT (1)))),(SELECT * FROM product WHERE attribute1 NOT IN ( SELECT attribute1 FROM product LIMIT (1)));";
 
 function getCommonCodeSQL(code_type, channel_num, value_string) {
-    return "SELECT int_val FROM code WHERE code_type = '" + code_type + channel_num + "' AND string_val = '" + value_string + "';";
+    return "SELECT int_val FROM code WHERE code_type = '" + code_type + channel_num + "' AND string_val = '" + value_string + "' LIMIT 1";
 }
 
 function getChannelCode(channel_num, value_string) {
-    let sqls123 = getCommonCodeSQL("channel", channel_num, value_string);
-    let ret;
-    worker.postMessage({ action: 'exec', sql: sqls123 });
-    worker.onmessage = function (event) {
-        let results = event.data.results;
-        if (!results) {
-            error({message: event.data.error});
-            return;
-        }
-        ret = results;
-        console.log(ret);
-    }
-    return ret;
+    return getCommonCodeSQL("channel", channel_num, value_string);
+    
+}
+
+function getProductCode(channel_num, value_string) {
+    return getCommonCodeSQL("attribute", channel_num, value_string);
+    
+}
+
+function getPropertyCode(channel_num, value_string) {
+    return getCommonCodeSQL("property", channel_num, value_string);
+    
 }
 
 function getCodeId(data, prefix) {
@@ -58,7 +57,7 @@ function genSQLFromCodeId(data) {
     Object.keys(data).map((key, id) => {
         let sql = "";
         if (key.includes("property")) {
-            sql = cmmn + "'" + key + "'" + ", '" + data[key] + "', " + id + ");\n";
+            sql = cmmn + "'property1'" + ", '" + data[key] + "', " + id + ");\n";
             sqls.push(sql);
         } else {
             data[key].map((items, ids) => {
@@ -69,7 +68,6 @@ function genSQLFromCodeId(data) {
         }
     })
     return sqls.join("");
-    // editor.getDoc().setValue(array2SQL(sqls));
 }
 
 function genSQLForBaseData() {
@@ -99,14 +97,10 @@ function genSQLForBaseData() {
     })
     let res = createChannel + insertChannelData.join("") + createProduct + insertProductData.join("") + createProperty + insertPropertyData.join("");
     return res;
-    // console.log(insertChannelData);
-    // console.log(insertProductData);
-    // console.log(insertPropertyData);
 }
 
 function generate_SQL_Statement(codes, start_date, end_date) {
     let today = getTodayDate();
-    // console.log(codes[0].columns.toString());
     let start_date_tmp = start_date.split("-");
     let end_date_tmp = end_date.split("-");
     let res = [];
@@ -118,14 +112,16 @@ function generate_SQL_Statement(codes, start_date, end_date) {
             sql = "INSERT INTO tree (" + codes[0].columns.toString() + ", value_date, date_created, account, model, hierarchy, active, user, tag, change, value" + ") VALUES (";
             stmt.map((field, id) => {
                 let r = "";
+                let empty = field;
                 if(id === 0) {
-                    // r = getPropertyCode(id + 1);
+                    r = "(" + getPropertyCode(id + 1, field) + "),";
                 } else if (id < 4) {
-                    // r = getChannelCode(id + 1);
+                    r = "(" + getChannelCode(id, field) + "),";
                 } else {
-                    // r = getProductCode(id + 1);
+                    r = "(" + getProductCode(id - 3, field) + "),";
                 }
-                sql += "'" + r + "', ";
+                if(empty === 'undefined') r = -2 + ",";
+                sql += r;
             })
             sql += "'" + tmp + "', '" + today + "', " + "0, 0, 1, 0, 2, 2, 2, 2" + Math.floor(Math.random() * 100) + ");\n";
             res.push(sql);

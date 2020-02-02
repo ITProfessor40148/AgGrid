@@ -13,8 +13,4 @@ async function loadInitData() {
     await $.get(file_propertise, function (data) {
         initialData["csvDataOfPropertise"] = Papa.parse(data).data;
     });
-    // genSQLForBaseData();
-    // genSQLFromCodeId(getCodeId(initialData.csvDataOfChannel, "channel"));
-    // genSQLFromCodeId(getCodeId(initialData.csvDataOfProduct, "attribute"));
-    // genSQLFromCodeId(getCodeId(initialData.csvDataOfPropertise, "property"));
 }
