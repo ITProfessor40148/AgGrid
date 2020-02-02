@@ -30,8 +30,7 @@ function noerror() {
 function execute(commands) {
 	tic();
 	worker.onmessage = function (event) {
-		var results = event.data.results;
-		console.log(results);
+		let results = event.data.results;
 		toc("Executing SQL");
 		if (!results) {
 			error({message: event.data.error});
