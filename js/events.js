@@ -11,10 +11,10 @@ async function loadStandard() {
     genCodeSQL += genSQLFromCodeId(getCodeId(initialData.csvDataOfProduct, "attribute"));
     genCodeSQL += genSQLFromCodeId(getCodeId(initialData.csvDataOfPropertise, "property"));
     genCodeSQL += "SELECT * FROM code;"
-    editor.getDoc().setValue(createCode + genCodeSQL);
+    editor.getDoc().setValue(createCode + base + genCodeSQL);
     execute(editor.getValue());
-    editor.getDoc().setValue(base + genCodeSQL);
-    execute(editor.getValue());
+    // editor.getDoc().setValue(genCodeSQL);
+    // execute(editor.getValue());
 }
 
 function generateSQL() {
@@ -26,7 +26,7 @@ function generateSQL() {
 			error({message: event.data.error});
 			return;
 		}
-		let res = generate_SQL_Statement(results, "2020-02-22", "2020-02-23");
+		let res = generate_SQL_Statement(results, "2020-11-20", "2020-11-23");
 		editor.getDoc().setValue(createTree + res.join("") + "\nSELECT * FROM tree;");
 	}
 }
