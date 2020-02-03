@@ -1,6 +1,7 @@
 let createCode = "DROP TABLE IF EXISTS code;\nCREATE TABLE code ( account INTEGER, model INTEGER, hierarchy INTEGER, active INTEGER, date_created TEXT, code_type STRING, string_val STRING, int_val INTEGER);\n";
 let createTree = "DROP TABLE IF EXISTS tree;\nCREATE TABLE tree (account INTEGER,model INTEGER,hierarchy INTEGER,attribute1 INTEGER,attribute2 INTEGER,attribute3 INTEGER,attribute4 INTEGER,attribute5 INTEGER,attribute6 INTEGER,attribute7 INTEGER,attribute8 INTEGER,attribute9 INTEGER,attribute10 INTEGER,channel1 INTEGER,channel2 INTEGER,channel3 INTEGER,property INTEGER,value float,value_date TEXT,date_created TEXT,user INTEGER,active INTEGER,tag INTEGER,change INTEGER);\n";
-let joiningSQL = "SELECT * FROM (SELECT * FROM (SELECT property1 AS property FROM property WHERE property1 NOT IN ( SELECT property1 FROM property LIMIT (1))), (SELECT * FROM channel WHERE channel1 NOT IN ( SELECT channel1 FROM channel LIMIT (1)))),(SELECT * FROM product WHERE attribute1 NOT IN ( SELECT attribute1 FROM product LIMIT (1)));";
+let joiningSQL = "SELECT * FROM (SELECT * FROM (SELECT property1 AS property FROM property), (SELECT * FROM channel)),(SELECT * FROM product);";
+/*let joiningSQL = "SELECT * FROM (SELECT * FROM (SELECT property1 AS property FROM property WHERE property1 NOT IN ( SELECT property1 FROM property LIMIT (1))), (SELECT * FROM channel WHERE channel1 NOT IN ( SELECT channel1 FROM channel LIMIT (1)))),(SELECT * FROM product WHERE attribute1 NOT IN ( SELECT attribute1 FROM product LIMIT (1)));";*/
 
 function getCommonCodeSQL(code_type, channel_num, value_string) {
     return "SELECT int_val FROM code WHERE code_type = '" + code_type + channel_num + "' AND string_val = '" + value_string + "' LIMIT 1";
